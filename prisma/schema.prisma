@@ -14,11 +14,11 @@ model User {
   email        String @unique
   passwordHash String
 
-  polls Poll[]
-  votes Vote[]
+  polls         Poll[]
+  votes         Vote[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Poll {
@@ -26,14 +26,16 @@ model Poll {
   question    String
   isPublished Boolean @default(false)
 
-  creatorId String
-  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  creator     User   @relation(fields: [creatorId], references: [id])
 
-  options PollOption[]
+  options     PollOption[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  votes     Vote[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  votes       Vote[]
+
+  @@unique([question,creatorId])
 }
 
 model PollOption {
@@ -42,7 +44,7 @@ model PollOption {
   pollId String
   poll   Poll   @relation(fields: [pollId], references: [id])
 
-  votes Vote[]
+  votes   Vote[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
