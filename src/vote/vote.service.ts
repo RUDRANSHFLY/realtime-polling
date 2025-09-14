@@ -7,10 +7,14 @@ import {
 import { DbService } from 'src/db/db.service';
 import { VoteCreateDTO } from './dto';
 import { Prisma } from 'generated/prisma';
+import { PollGateway } from 'src/poll/poll.gateway';
 
 @Injectable()
 export class VoteService {
-  constructor(private readonly prisma: DbService) {}
+  constructor(
+    private readonly prisma: DbService,
+    private readonly gateway: PollGateway,
+  ) {}
 
   async addVote(dto: VoteCreateDTO, userId: string) {
     try {
@@ -22,6 +26,10 @@ export class VoteService {
 
       if (!pollExist) {
         throw new NotFoundException('Poll does not exist!');
+      }
+
+      if (!pollExist.isPublished) {
+        throw new NotFoundException('Poll is not published yet!');
       }
 
       const pollOptionExist = await this.prisma.pollOption.findUnique({
@@ -47,6 +55,27 @@ export class VoteService {
           optionId: dto.optionId,
         },
       });
+
+      const pollOptionsVotes = await this.prisma.pollOption.findMany({
+        where: {
+          pollId: dto.pollId,
+        },
+        include: {
+          _count: {
+            select: {
+              votes: true,
+            },
+          },
+        },
+      });
+
+      const counts = pollOptionsVotes.map((o) => ({
+        id: o.id,
+        text: o.text,
+        voteCount: o._count.votes,
+      }));
+
+      this.gateway.broadCastVoteUpdate(dto.pollId, counts);
 
       return vote;
     } catch (err) {

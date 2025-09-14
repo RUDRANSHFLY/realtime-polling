@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PollService } from './poll.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { PollCreateDTO } from './dto';
@@ -17,5 +26,19 @@ export class PollController {
   @Get()
   getPolls(@Query('page') page: number, @Query('limit') limit: number) {
     return this.pollService.getPolls(page, limit);
+  }
+
+  @Get('me')
+  getMinePolls(
+    @getUser('sub') userId: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.pollService.getMinePolls(userId, page, limit);
+  }
+
+  @Patch(':id/publish')
+  publishPoll(@Param('id') pollId: string, @getUser('sub') userId: string) {
+    return this.pollService.publishPoll(pollId, userId);
   }
 }
