@@ -77,7 +77,10 @@ export class VoteService {
 
       this.gateway.broadCastVoteUpdate(dto.pollId, counts);
 
-      return vote;
+      return {
+        message: 'Vote added to poll',
+        id: vote.id,
+      };
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {

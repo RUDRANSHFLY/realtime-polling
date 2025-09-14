@@ -26,6 +26,7 @@
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-socket.io": "^11.1.6",
+    "@nestjs/swagger": "^11.2.0",
     "@nestjs/websockets": "^11.1.6",
     "@prisma/client": "^6.16.1",
     "argon2": "^0.44.0",

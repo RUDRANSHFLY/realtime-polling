@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
@@ -13,15 +14,36 @@ import {
 } from 'class-validator';
 
 export class PollCreateDTO {
+  @ApiProperty({
+    name: 'question',
+    type: String,
+    description: 'a question u wanna ask for poll',
+    example: 'What iss your favorite season of the year?',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
   question!: string;
 
+  @ApiProperty({
+    name: 'isPublished',
+    type: Boolean,
+    description: 'wanna publish poll or not',
+    example: true,
+    required: true,
+  })
   @IsBoolean()
   @IsNotEmpty()
   isPublished!: boolean;
 
+  @ApiProperty({
+    name: 'options',
+    type: [String],
+    description: 'List of Options for Poll',
+    example: ['Spring', 'Summer', 'Autumn', 'Winter'],
+    required: true,
+  })
   @IsArray()
   @ArrayMinSize(1)
   @IsString({ each: true })

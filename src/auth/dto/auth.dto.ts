@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -8,15 +9,33 @@ import {
 } from 'class-validator';
 
 export class SignUpDTO {
+  @ApiProperty({
+    name: 'email',
+    description: 'an email for account creation',
+    example: 'abc@exmaple.com',
+    required: true,
+  })
   @IsEmail()
   @IsNotEmpty()
   email!: string;
 
+  @ApiProperty({
+    name: 'password',
+    description: 'an passowrd mimimuj length 8',
+    example: 'safePassword',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
   password!: string;
 
+  @ApiProperty({
+    name: 'name',
+    description: 'an username for account',
+    example: 'john',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(2)
@@ -24,10 +43,22 @@ export class SignUpDTO {
 }
 
 export class SignInDTO {
+  @ApiProperty({
+    name: 'email',
+    description: 'an email for account creation',
+    example: 'abc@exmaple.com',
+    required: true,
+  })
   @IsEmail()
   @IsNotEmpty()
   email!: string;
 
+  @ApiProperty({
+    name: 'password',
+    description: 'an passowrd mimimuj length 8',
+    example: 'safePassword',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
