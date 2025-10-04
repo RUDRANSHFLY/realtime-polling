@@ -1,7 +1,3 @@
-Here you go — the full **`README.md`** you can copy-paste directly into your repo:
-
----
-
 # Realtime Polling 🎯
 
 A full-stack **NestJS + Prisma + Socket.IO** app for creating polls, voting, and seeing results update in real time.
